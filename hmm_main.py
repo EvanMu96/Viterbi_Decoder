@@ -35,7 +35,13 @@ class Bin_Viterbi:
         for i in range(len(series)-2, -1, -1):
             #print(type(i), type(cur))
             #print(cur)
-            predict_list.append(psi_list[i, cur])
+            if psi_list[i, cur]==0:
+                C = 'A'
+            elif psi_list[i, cur]==1:
+                C = 'B'
+            else:
+                raise UserWarning()
+            predict_list.append(C)
             cur = psi_list[i, cur]
         return predict_list[::-1] # reverse the status list. the first data should be no.1
             
@@ -49,6 +55,11 @@ if __name__ == "__main__":
     model = Bin_Viterbi(cfg_dict['state_num'], cfg_dict['obn_num'], cfg_dict['A'], cfg_dict['B'], cfg_dict['pi'])
     status_series = model.decode(series)
     write_result(status_series)
+    b_num = 0
+    for s in status_series:
+        if s==1:
+            b_num += 1
+    print(b_num)
     #print(opt_mat.shape)
 
 

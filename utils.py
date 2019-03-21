@@ -2,7 +2,7 @@
 
 # read example.hmm file which is the configuration of Hidden Markov Model
 # return data type dict
-# this function contains hard coding please don't use this  to submit
+import re
 import numpy as np
 def read_cfg(file_path):
     f = open(file_path, 'r')
@@ -12,14 +12,18 @@ def read_cfg(file_path):
     cfg_dict['state_num'] = int(line1[0])
     cfg_dict['obn_num'] = int(line1[1])
     cfg_dict['pi'] = np.array([float(i) for i in lines[1].split(' ')])
-    temp1 = [i.split(' ') for i in lines[2].split('  ')]
-    temp2 = [i.split(' ') for i in lines[3].split('   ')]
+    temp1, temp2 = [], []
+    temp1.append(re.split('\s+', lines[2])[0:2])
+    temp1.append(re.split('\s+', lines[2])[2:-1])
+    temp2.append(re.split('\s+', lines[3])[0:2])
+    temp2.append(re.split('\s+', lines[3])[2:-1])
     #print(temp1)
     #print(temp2)
-    A1 = np.array([float(i) for i in temp1[0]])
-    A2 = np.array([float(i) for i in temp2[0]])
-    B1 = np.array([float(i) for i in temp1[1]])
-    B2 = np.array([float(i) for i in temp2[1]])
+    A1 = np.array([float('0'+i) for i in temp1[0]])
+    A2 = np.array([float('0'+i) for i in temp2[0]])
+    B1 = np.array([float('0'+i) for i in temp1[1]])
+    B2 = np.array([float('0'+i) for i in temp2[1]])
+    print(A1.shape, A2.shape, B1.shape, B2.shape)
     cfg_dict['A'] = np.stack((A1, A2))
     cfg_dict['B'] = np.stack((B1, B2))
     return cfg_dict
@@ -44,7 +48,7 @@ def read_series(file_path):
 
 # write status list into a file
 def write_result(status_list):
-    f = open('result.txt', 'x')
+    f = open('result.txt', 'w')
     start_point = 1
     lines = []
     for i in range(len(status_list)-1):
@@ -54,7 +58,7 @@ def write_result(status_list):
         if i == len(status_list)-2:
             lines.append("{} to {} is status {}\n".format(start_point, 1000000, status_list[i]))
     f.writelines(lines)
-            
+    print('the reuslts are writen into ./result.txt')
             
 
 
