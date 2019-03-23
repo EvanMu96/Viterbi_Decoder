@@ -1,0 +1,10 @@
+__pycache__
+example.fa
+example.hmm
+example.hmm.readme
+hmm_main.py
+new.txt
+readme.md
+readme.txt
+result.txt
+utils.py

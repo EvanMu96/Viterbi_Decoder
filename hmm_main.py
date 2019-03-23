@@ -47,6 +47,7 @@ class Bin_Viterbi:
             
 
 if __name__ == "__main__":
+    print('program start')
     hmm_path = sys.argv[1]
     fa_path = sys.argv[2]
     cfg_dict = read_cfg(hmm_path)
@@ -54,12 +55,8 @@ if __name__ == "__main__":
     #print(len(series))
     model = Bin_Viterbi(cfg_dict['state_num'], cfg_dict['obn_num'], cfg_dict['A'], cfg_dict['B'], cfg_dict['pi'])
     status_series = model.decode(series)
-    write_result(status_series)
-    b_num = 0
-    for s in status_series:
-        if s=='B':
-            b_num += 1
-    print("The total number of B state is {}".format(b_num))
+    num = write_result(status_series)
+    print("The total number of B state segment is {}".format(num))
     print("The detail result has been writen into the file result.txt")
     #print(opt_mat.shape)
 
